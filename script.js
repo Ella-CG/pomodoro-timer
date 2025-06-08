@@ -8,6 +8,7 @@ let minutes = 25;
 let seconds = 0;
 let timer;
 let isStarted = false;
+let mode = "pomodoro";
 
 function addZero(value) {
     if (value < 10) {
@@ -34,7 +35,6 @@ function updateTimer() {
 }
 
 function toggleStopStart() {
-    isStarted = !isStarted;
     if (!isStarted) {
         clearInterval(timer);
         startButton.textContent = 'Start';
@@ -42,22 +42,25 @@ function toggleStopStart() {
         startTimer();
         startButton.textContent = 'Stop';
     }
+    isStarted = !isStarted;
 }
 
 function pauseTimer() {
-    isStarted = true;
+    isStarted = false;
     clearInterval(timer);
     startButton.textContent = 'Start';
 }
 
 function setTimeType(type) {
-    if (type === "POMODORO") {
+    if (type === "pomodoro") {
+        mode = "pomodoro";
         minutes = 25;
         seconds = 0;
         pomodoroTime.textContent = `${addZero(minutes)}:${addZero(seconds)}`;
         pomodoroButton.classList.add("active");
         breakButton.classList.remove("active");
-    } else if (type === "SHORTBREAK") {
+    } else if (type === "break") {
+        mode = "break";
         minutes = 5;
         seconds = 0;
         pomodoroTime.textContent = `${addZero(minutes)}:${addZero(seconds)}`;
@@ -68,17 +71,24 @@ function setTimeType(type) {
 }
 
 function resetTime() {
+    if (mode === "pomodoro") {
+        minutes = 25;
+        seconds = 0;
+        pomodoroTime.textContent = `${addZero(minutes)}:${addZero(seconds)}`;
+    } else {
+        minutes = 5;
+        seconds = 0;
+        pomodoroTime.textContent = `${addZero(minutes)}:${addZero(seconds)}`;
+    }
     pauseTimer();
-    minutes = 25;
-    seconds = 0;
-    pomodoroTime.textContent = `${addZero(minutes)}:${addZero(seconds)}`;
+
 }
 
 pomodoroButton.addEventListener("click", () => {
-    setTimeType("POMODORO");
+    setTimeType("pomodoro");
 })
 breakButton.addEventListener("click", () => {
-    setTimeType("SHORTBREAK");
+    setTimeType("break");
 });
 startButton.addEventListener("click", toggleStopStart);
 resetButton.addEventListener("click", resetTime);
