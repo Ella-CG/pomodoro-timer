@@ -35,7 +35,7 @@ function updateTimer() {
 }
 
 function toggleStopStart() {
-    if (!isStarted) {
+    if (isStarted) {
         clearInterval(timer);
         startButton.textContent = 'Start';
     } else {
